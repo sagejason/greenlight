@@ -154,6 +154,46 @@ describe UsersController, type: :controller do
       end
     end
 
+    context "direct add registration" do
+      before do
+        allow_any_instance_of(Registrar).to receive(:direct_add_registration).and_return(true)
+        allow(Rails.configuration).to receive(:allow_user_signup).and_return(true)
+        @user = create(:user, provider: "greenlight")
+        @admin = create(:user, provider: "greenlight", email: "test@example.com")
+        @admin.set_role :admin
+      end
+
+      it "should not allow anonymous users to create users" do
+        params = random_valid_user_params
+        post :create, params: params
+
+        u = User.find_by(name: params[:user][:name], email: params[:user][:email])
+
+        expect(u).to be_nil
+      end
+
+      it "should not allow non-admins to create users" do
+        params = random_valid_user_params
+        @request.session[:user_id] = @user.id
+        post :create, params: params
+
+        u = User.find_by(name: params[:user][:name], email: params[:user][:email])
+
+        expect(u).to be_nil
+      end
+
+      it "should allow admins to create users" do
+        params = random_valid_user_params
+        @request.session[:user_id] = @admin.id
+
+        post :create, params: params
+
+        u = User.find_by(name: params[:user][:name], email: params[:user][:email])
+
+        expect(u.provider).to eql("greenlight")
+      end
+    end
+
     context "allow email verification" do
       before do
         allow(Rails.configuration).to receive(:enable_email_verification).and_return(true)

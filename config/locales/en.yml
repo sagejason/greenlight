@@ -89,6 +89,7 @@ en:
           approval: Approve/Decline
           invite: Join by Invitation
           open: Open Registration
+          direct_add: Direct Add
       rooms:
         info: Limits the number of rooms that a user can have (including Home Room). This setting does not apply to administrators.
         title: Number of Rooms per User
@@ -168,6 +169,7 @@ en:
     title: Organization Settings
     users:
       invite: Invite User
+      create: Create User
       edit:
         title: Edit User Details
       settings:
@@ -384,6 +386,8 @@ en:
       keep: On second thought, I'll keep it.
       warning: You will <b>not</b> be able to recover this room
       recording_warning: or any of its %{recordings_num} associated recordings.
+    create_user:
+      title: Create User
     invite_user:
       email_placeholder: Enter the users' emails (separated by commas)
       footer: The user will receive an email with instructions on how to sign up
@@ -483,6 +487,7 @@ en:
     invite:
       fail: Your token is either invalid or has expired. If you believe this is a mistake, please contact your administrator.
       no_invite: You do not have an invitation to join. Please contact your administrator to receive one.
+      direct_add: Accounts must be created by an administrator.
   remove: Remove
   rename: Rename
   reset_password:

@@ -114,7 +114,7 @@ module Greenlight
     config.enable_google_calendar_button = (ENV['ENABLE_GOOGLE_CALENDAR_BUTTON'] == "true")
 
     # Enum containing the different possible registration methods
-    config.registration_methods = { open: "0", invite: "1", approval: "2" }
+    config.registration_methods = { open: "0", invite: "1", approval: "2", direct_add: "3" }
 
     config.google_analytics = ENV["GOOGLE_ANALYTICS_TRACKING_ID"].present?
 

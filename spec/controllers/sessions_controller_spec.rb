@@ -43,6 +43,16 @@ describe SessionsController, type: :controller do
       expect(flash[:alert]).to be_present
       expect(response).to redirect_to(root_path)
     end
+
+    it "rejects the user if direct add registration mode" do
+      allow_any_instance_of(Registrar).to receive(:direct_add_registration).and_return(true)
+      allow(Rails.configuration).to receive(:allow_user_signup).and_return(true)
+
+      get :new
+
+      expect(flash[:alert]).to be_present
+      expect(response).to redirect_to(root_path)
+    end
   end
 
   describe "GET #signin" do

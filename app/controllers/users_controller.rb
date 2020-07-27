@@ -25,7 +25,7 @@ class UsersController < ApplicationController
   include Rolify
 
   before_action :find_user, only: [:edit, :change_password, :delete_account, :update, :update_password]
-  before_action :ensure_unauthenticated_except_twitter, only: [:create]
+  before_action :can_create_users, only: [:create]
   before_action :check_user_signup_allowed, only: [:create]
   before_action :check_admin_of, only: [:edit, :change_password, :delete_account]
 
@@ -44,6 +44,13 @@ class UsersController < ApplicationController
     @user.save
 
     logger.info "Support: #{@user.email} user has been created."
+
+    if direct_add_registration
+      @user.set_role :user
+      @user.update(email_verified: true)
+
+      return redirect_to admins_path, flash: { success: "User created" }
+    end
 
     # Set user to pending and redirect if Approval Registration is set
     if approval_registration
@@ -226,5 +233,14 @@ class UsersController < ApplicationController
     redirect_to current_user.main_room if current_user &&
                                           @user != current_user &&
                                           !current_user.admin_of?(@user, "can_manage_users")
+  end
+
+  def can_create_users
+    if direct_add_registration
+      redirect_to root_path if !current_user ||
+          !current_user.has_role?(:admin)
+    else
+      ensure_unauthenticated_except_twitter
+    end
   end
 end

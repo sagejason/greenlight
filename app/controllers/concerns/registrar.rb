@@ -27,6 +27,10 @@ module Registrar
     @settings.get_value("Registration Method") == Rails.configuration.registration_methods[:invite]
   end
 
+  def direct_add_registration
+    @settings.get_value("Registration Method") == Rails.configuration.registration_methods[:direct_add]
+  end
+
   # Returns a hash containing whether the user has been invited and if they
   # signed up with the same email that they were invited with
   def check_user_invited(email, token, domain)

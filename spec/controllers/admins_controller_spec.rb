@@ -399,6 +399,22 @@ describe AdminsController, type: :controller do
         expect(response).to redirect_to(admin_site_settings_path)
       end
 
+      it "can set the direct add registration method" do
+        allow(Rails.configuration).to receive(:enable_email_verification).and_return(true)
+        allow(Rails.configuration).to receive(:loadbalanced_configuration).and_return(true)
+        allow_any_instance_of(User).to receive(:greenlight_account?).and_return(true)
+
+        @request.session[:user_id] = @admin.id
+
+        post :registration_method, params: { value: "direct_add" }
+
+        feature = Setting.find_by(provider: "provider1").features.find_by(name: "Registration Method")
+
+        expect(feature[:value]).to eq(Rails.configuration.registration_methods[:direct_add])
+        expect(flash[:success]).to be_present
+        expect(response).to redirect_to(admin_site_settings_path)
+      end
+
       it "does not allow the user to change to invite if emails are off" do
         allow(Rails.configuration).to receive(:enable_email_verification).and_return(false)
         allow(Rails.configuration).to receive(:loadbalanced_configuration).and_return(true)

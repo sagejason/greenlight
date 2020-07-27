@@ -45,6 +45,11 @@ module AdminsHelper
       @settings.get_value("Registration Method") == Rails.configuration.registration_methods[:invite]
   end
 
+  def direct_add_registration
+    controller_name == "admins" && action_name == "index" &&
+        @settings.get_value("Registration Method") == Rails.configuration.registration_methods[:direct_add]
+  end
+
   def room_authentication_string
     if @settings.get_value("Room Authentication") == "true"
       I18n.t("administrator.site_settings.authentication.enabled")
@@ -77,7 +82,9 @@ module AdminsHelper
         I18n.t("administrator.site_settings.registration.methods.invite")
     when Rails.configuration.registration_methods[:approval]
         I18n.t("administrator.site_settings.registration.methods.approval")
-      end
+    when Rails.configuration.registration_methods[:direct_add]
+      I18n.t("administrator.site_settings.registration.methods.direct_add")
+    end
   end
 
   def log_level_string

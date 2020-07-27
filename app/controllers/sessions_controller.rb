@@ -49,6 +49,10 @@ class SessionsController < ApplicationController
 
   # GET /signup
   def new
+    if direct_add_registration
+      redirect_to root_path, flash: { alert: I18n.t("registration.invite.direct_add") }
+    end
+
     # Check if the user needs to be invited
     if invite_registration
       redirect_to root_path, flash: { alert: I18n.t("registration.invite.no_invite") } unless params[:invite_token]

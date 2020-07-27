@@ -43,6 +43,8 @@ class AdminsController < ApplicationController
     @user_list = merge_user_list
 
     @pagy, @users = pagy(manage_users_list)
+
+    @user = User.new
   end
 
   # GET /admins/site_settings

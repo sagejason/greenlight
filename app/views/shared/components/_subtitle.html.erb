@@ -28,6 +28,14 @@
         </div>
       <% end %>
 
+      <% if direct_add_registration %>
+        <div id="invite-user" class="d-inline-block float-right ml-3">
+          <%= link_to "#createUserModal", :class => "btn btn-primary", "data-toggle": "modal" do %>
+            <%= t("administrator.users.create") %> <i class="fas fa-paper-plane ml-1"></i>
+          <% end %>
+        </div>
+      <% end %>
+
       <div id="search-bar" class="d-inline-block float-right">
         <div class="input-group">
           <input id="search-input" type="text" class="form-control" placeholder="<%= t("settings.search") %>..." value="<%= @search %>">
