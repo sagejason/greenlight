@@ -34,6 +34,26 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     @user.provider = @user_domain
 
+    if direct_add_registration
+      password = SecureRandom.random_number(36**12).to_s(36).rjust(12, "0")
+
+      @user.password = password
+      @user.password_confirmation = password
+      @user.email_verified = true
+
+      return redirect_to admins_path, flash: {alert: "User details invalid"} unless @user.valid?
+
+      logger.info "Support: #{@user.email} user has been created."
+      @user.save
+
+      if update_roles(params[:user][:role_id])
+        send_account_created_email(@user, password)
+        return redirect_to admins_path, flash: { success: "User created" }
+      else
+        return redirect_to admins_path, flash[:alert] = I18n.t("administrator.roles.invalid_assignment")
+      end
+    end
+
     # User or recpatcha is not valid
     render("sessions/new") && return unless valid_user_or_captcha
 
@@ -44,16 +64,6 @@ class UsersController < ApplicationController
     @user.save
 
     logger.info "Support: #{@user.email} user has been created."
-
-    if direct_add_registration
-      @user.update(email_verified: true)
-
-      if update_roles(params[:user][:role_id])
-        return redirect_to admins_path, flash: { success: "User created" }
-      else
-        return redirect_to admins_path, flash[:alert] = I18n.t("administrator.roles.invalid_assignment")
-      end
-    end
 
     # Set user to pending and redirect if Approval Registration is set
     if approval_registration
@@ -241,7 +251,7 @@ class UsersController < ApplicationController
   def can_create_users
     if direct_add_registration
       redirect_to root_path if !current_user ||
-          !current_user.has_role?(:admin)
+        !current_user.role.get_permission("can_manage_users")
     else
       ensure_unauthenticated_except_twitter
     end

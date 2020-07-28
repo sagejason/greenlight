@@ -161,49 +161,41 @@ describe UsersController, type: :controller do
         @user = create(:user, provider: "greenlight")
         @admin = create(:user, provider: "greenlight", email: "test@example.com")
         @admin.set_role :admin
+
+        @tmp_role = Role.create(name: "test", priority: 4, provider: "greenlight")
+        @direct_add_params = random_valid_user_params
+        @direct_add_params[:user].merge!(
+            role_id: @tmp_role.id.to_s,
+            password: nil,
+            password_confirmation: nil
+        )
       end
 
       it "should not allow anonymous users to create users" do
-        params = random_valid_user_params
-        post :create, params: params
+        post :create, params: @direct_add_params
 
-        u = User.find_by(name: params[:user][:name], email: params[:user][:email])
+        u = User.find_by(name: @direct_add_params[:user][:name], email: @direct_add_params[:user][:email])
 
         expect(u).to be_nil
       end
 
       it "should not allow non-admins to create users" do
-        params = random_valid_user_params
         @request.session[:user_id] = @user.id
-        post :create, params: params
+        post :create, params: @direct_add_params
 
-        u = User.find_by(name: params[:user][:name], email: params[:user][:email])
+        u = User.find_by(name: @direct_add_params[:user][:name], email: @direct_add_params[:user][:email])
 
         expect(u).to be_nil
       end
 
-      it "should allow admins to create users" do
-        params = random_valid_user_params
+      it "should allow admins to create users, set role, and random password" do
         @request.session[:user_id] = @admin.id
 
-        post :create, params: params
+        post :create, params: @direct_add_params
 
-        u = User.find_by(name: params[:user][:name], email: params[:user][:email])
+        u = User.find_by(name: @direct_add_params[:user][:name], email: @direct_add_params[:user][:email])
 
-        expect(u.provider).to eql("greenlight")
-      end
-
-      it "should set the role" do
-        tmp_role = Role.create(name: "test", priority: 4, provider: "greenlight")
-        params = random_valid_user_params
-        params[:user].merge!(role_id: tmp_role.id.to_s)
-        @request.session[:user_id] = @admin.id
-
-        post :create, params: params
-
-        u = User.find_by(name: params[:user][:name], email: params[:user][:email])
-
-        expect(u.role_id).to eql(tmp_role.id)
+        expect(u.role_id).to eql(@tmp_role.id)
       end
     end
 

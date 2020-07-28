@@ -33,6 +33,17 @@ module Emailer
     end
   end
 
+  def send_account_created_email(user, password)
+    begin
+      UserMailer.account_created_email(user, password, @settings).deliver
+    rescue => e
+      logger.error "Support: Error in email delivery: #{e}"
+      flash[:alert] = I18n.t(params[:message], default: I18n.t("delivery_error"))
+    else
+      flash[:success] = I18n.t("email_sent", email_type: t("verify.verification"))
+    end
+  end
+
   # Sends password reset email.
   def send_password_reset_email(user, token)
     begin
