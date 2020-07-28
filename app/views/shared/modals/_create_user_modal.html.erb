@@ -34,6 +34,10 @@
               <div class="invalid-feedback d-block"><%= @user.errors.full_messages_for(:email).first %></div>
             </div>
             <div class="form-group">
+              <%= f.label :roles, t("settings.account.roles"), class: "form-label" %>
+              <%= f.select(:role_id, options_for_select(role_options.map { |role| [translated_role_name(role), role.id]}), {}, class: "form-control selectpicker show-tick") %>
+            </div>
+            <div class="form-group">
               <%= f.label :password, t("password"), class: "form-label" %>
               <%= f.password_field :password, class: "form-control #{form_is_invalid?(@user, :password)}", placeholder: t("password") %>
               <div class="invalid-feedback d-block"><%= @user.errors.full_messages_for(:password).first %></div>

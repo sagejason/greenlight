@@ -192,6 +192,19 @@ describe UsersController, type: :controller do
 
         expect(u.provider).to eql("greenlight")
       end
+
+      it "should set the role" do
+        tmp_role = Role.create(name: "test", priority: 4, provider: "greenlight")
+        params = random_valid_user_params
+        params[:user].merge!(role_id: tmp_role.id.to_s)
+        @request.session[:user_id] = @admin.id
+
+        post :create, params: params
+
+        u = User.find_by(name: params[:user][:name], email: params[:user][:email])
+
+        expect(u.role_id).to eql(tmp_role.id)
+      end
     end
 
     context "allow email verification" do

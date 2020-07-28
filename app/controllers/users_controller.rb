@@ -46,10 +46,13 @@ class UsersController < ApplicationController
     logger.info "Support: #{@user.email} user has been created."
 
     if direct_add_registration
-      @user.set_role :user
       @user.update(email_verified: true)
 
-      return redirect_to admins_path, flash: { success: "User created" }
+      if update_roles(params[:user][:role_id])
+        return redirect_to admins_path, flash: { success: "User created" }
+      else
+        return redirect_to admins_path, flash[:alert] = I18n.t("administrator.roles.invalid_assignment")
+      end
     end
 
     # Set user to pending and redirect if Approval Registration is set
