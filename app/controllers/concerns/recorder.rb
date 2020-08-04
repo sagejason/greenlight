@@ -30,7 +30,12 @@ module Recorder
   # Fetches a rooms public recordings.
   def public_recordings(room_bbb_id, search_params = {}, ret_search_params = false)
     search, order_col, order_dir, recs = recordings(room_bbb_id, search_params, ret_search_params)
-    [search, order_col, order_dir, recs.select { |r| r[:metadata][:"gl-listed"] == "true" }]
+
+    if !current_user.nil? && current_user.role.priority < @room.owner.role.priority
+      [search, order_col, order_dir, recs]
+    else
+      [search, order_col, order_dir, recs.select { |r| r[:metadata][:"gl-listed"] == "true" }]
+    end
   end
 
   # Makes paginated API calls to get recordings
