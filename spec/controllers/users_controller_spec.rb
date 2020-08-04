@@ -196,6 +196,7 @@ describe UsersController, type: :controller do
         u = User.find_by(name: @direct_add_params[:user][:name], email: @direct_add_params[:user][:email])
 
         expect(u.role_id).to eql(@tmp_role.id)
+        expect(u.password_digest).to_not be_nil
       end
     end
 
