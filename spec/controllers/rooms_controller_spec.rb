@@ -247,6 +247,7 @@ describe RoomsController, type: :controller do
   describe "POST #join" do
     before do
       @user = create(:user)
+      @user.set_role :admin
       @owner = create(:user)
       @room = @owner.main_room
     end
@@ -258,13 +259,6 @@ describe RoomsController, type: :controller do
       post :join, params: { room_uid: @room, join_name: @user.name }
 
       expect(response).to redirect_to(join_path(@owner.main_room, @user.name, {}, @user.uid))
-    end
-
-    it "should use join name if user is not logged in and meeting running" do
-      allow_any_instance_of(BigBlueButton::BigBlueButtonApi).to receive(:is_meeting_running?).and_return(true)
-      post :join, params: { room_uid: @room, join_name: "Join Name" }
-
-      expect(response).to redirect_to(join_path(@owner.main_room, "Join Name", {}, response.cookies["guest_id"]))
     end
 
     it "should render wait if meeting isn't running" do
@@ -408,6 +402,18 @@ describe RoomsController, type: :controller do
       post :join, params: { room_uid: @room, join_name: @owner.name }
 
       expect(flash[:alert]).to be_present
+      expect(response).to redirect_to(root_path)
+    end
+
+    it "should not allow the user to join if their role is not higher" do
+      allow_any_instance_of(Setting).to receive(:get_value).and_return("true")
+      allow_any_instance_of(BigBlueButton::BigBlueButtonApi).to receive(:is_meeting_running?).and_return(true)
+
+      @owner.set_role :admin
+
+      @request.session[:user_id] = @user.id
+      post :join, params: { room_uid: @room, join_name: @user.name }
+
       expect(response).to redirect_to(root_path)
     end
 

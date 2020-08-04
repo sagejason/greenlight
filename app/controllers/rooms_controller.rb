@@ -99,9 +99,13 @@ class RoomsController < ApplicationController
   # POST /:room_uid
   def join
     return redirect_to root_path,
-      flash: { alert: I18n.t("administrator.site_settings.authentication.user-info") } if auth_required
+      flash: { alert: I18n.t("administrator.site_settings.authentication.user-info") } if current_user.nil?
 
     @shared_room = room_shared_with_user
+
+    if !@room.owned_by?(current_user) && current_user.role.priority >= @room.owner.role.priority
+        return redirect_to root_path, flash: { alert: "You do not have permission to join this room" }
+    end
 
     unless @room.owned_by?(current_user) || @shared_room
       # Don't allow users to join unless they have a valid access code or the room doesn't have an access code
@@ -343,10 +347,6 @@ class RoomsController < ApplicationController
 
   def verify_user_not_admin
     redirect_to admins_path if current_user&.has_role?(:super_admin)
-  end
-
-  def auth_required
-    @settings.get_value("Room Authentication") == "true" && current_user.nil?
   end
 
   # Checks if the room is shared with the user and room sharing is enabled
