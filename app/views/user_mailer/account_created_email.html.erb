@@ -35,5 +35,9 @@
       <p>
         <%= t('mailer.user.account_created_email.password', password: @password) %>
       </p>
+      
+      <p>
+        <%= t('mailer.user.account_created_email.login', login: @url) %>
+      </p>
     </div>
   </div>
