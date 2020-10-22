@@ -22,4 +22,6 @@
 
 <%= t('mailer.user.account_created_email.username', email: @user[:email]) %>
 
-<%= t('mailer.user.account_created_email.password', password: @password) %>
+<%= t('mailer.user.account_created_email.password', password: @password) %>       
+
+<%= t('mailer.user.account_created_email.login', login: @url) %>
