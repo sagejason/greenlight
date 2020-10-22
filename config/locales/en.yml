@@ -357,6 +357,7 @@ en:
       account_created_email:
         username: Your username is %{email}.
         password: Your password is %{password}.
+        login: 'Login at %{url}.'
   maintenance:
     window_alert: Maintenance window scheduled for %{date}
   max_concurrent: The maximum number of concurrent sessions allowed has been reached!
