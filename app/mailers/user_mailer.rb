@@ -31,9 +31,10 @@ class UserMailer < ApplicationMailer
     mail(to: @user.email, subject: t('landing.welcome'))
   end
 
-  def account_created_email(user, password, settings)
+  def account_created_email(user, password, settings, url)
     @settings = settings
     @user = user
+    @url = url
     @password = password
     @image = logo_image
     @color = user_color
