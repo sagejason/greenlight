@@ -33,7 +33,7 @@
           <% end %>
         </div>
         <h4 class="text-left mb-6"><%= @room.sessions %> <%= t("room.sessions") %> | <%= @recordings.length %> <%= t("room.recordings") %></h4>
-        <% unless exceeds_limit %>
+       	<% unless exceeds_limit %>
           <label class="form-label"><%= t("room.invite_participants") %></label>
           <div class="row">
             <div class="col-lg-7 col-md-12 mt-2">
@@ -96,7 +96,7 @@
           </div>
         <% end %>
       <% end %>
-      <% if (current_user.role.get_permission("can_create_rooms") && !room_limit_exceeded) || '1'  == '1'  %>
+      <% if (current_user.role.get_permission("can_create_rooms") && !room_limit_exceeded) || (!current_user.nil? && current_user.role.priority < @room.owner.role.priority)  %>
         <%= render "rooms/components/create_room_block"%>
       <% end %>
     </div>
