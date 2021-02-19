@@ -35,7 +35,7 @@ module Emailer
 
   def send_account_created_email(user, password)
     begin
-      UserMailer.account_created_email(user, password, @settings).deliver
+      UserMailer.account_created_email(user, password, root_url, @settings).deliver
     rescue => e
       logger.error "Support: Error in email delivery: #{e}"
       flash[:alert] = I18n.t(params[:message], default: I18n.t("delivery_error"))

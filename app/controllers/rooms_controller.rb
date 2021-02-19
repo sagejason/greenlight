@@ -101,9 +101,9 @@ class RoomsController < ApplicationController
     return redirect_to root_path,
       flash: { alert: I18n.t("administrator.site_settings.authentication.user-info") } if current_user.nil?
 
-    @shared_room = room_shared_with_user
+    @shared_room = room_shared_with_user	  
 
-    if !@room.owned_by?(current_user) && current_user.role.priority >= @room.owner.role.priority
+    if !@room.owned_by?(current_user) && current_user.role.priority >= @room.owner.role.priority && !@shared_room
         return redirect_to root_path, flash: { alert: "You do not have permission to join this room" }
     end
 

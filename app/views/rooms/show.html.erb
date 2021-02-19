@@ -96,8 +96,7 @@
           </div>
         <% end %>
       <% end %>
-
-      <% if current_user.role.get_permission("can_create_rooms") && !room_limit_exceeded %>
+      <% if (current_user.role.get_permission("can_create_rooms") && !room_limit_exceeded) || '1'  == '1'  %>
         <%= render "rooms/components/create_room_block"%>
       <% end %>
     </div>

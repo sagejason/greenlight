@@ -194,7 +194,7 @@ en:
         username: Username
       title: Manage Users
   add_to_google_calendar: "Add to Google Calendar"
-  bigbluebutton: BigBlueButton
+  bigbluebutton: Sage Music® Meet
   bigbluebutton_exception: Oops, there was an error when starting the meeting!
   cancel: Cancel
   cookies:
@@ -258,14 +258,14 @@ en:
   expired_reset_token: Password reset link has expired!
   features:
     title: Features
-    rooms: Personalized Rooms
-    recordings: Recording Management
-    designs: Custom Designs
-    authentication: User Authentication
+    rooms: Your own lesson room
+    recordings: Save lesson recordings
+    designs: Share your musical scores
+    authentication: Share your room with others
   footer:
-    legal: Legal
+    legal: Sage Music Homepage
     privpolicy: Privacy Policy
-    powered_by: Powered by %{href}.
+    powered_by: Sage Music® Meet is powered by %{href}.
   forgot_password:
     subtitle: Forgot Password
     email: Email
@@ -273,14 +273,14 @@ en:
   go_back: Go back
   greenlight: Greenlight
   header:
-    all_recordings: All Recordings
+    all_recordings: Recordings
     dropdown:
       account_settings: Organization
       help: Need help?
-      home: Home
+      home: Meet
       settings: Profile
       signout: Sign out
-  home_room: Home Room
+  home_room: Lesson Room
   info_update_success: Information successfully updated.
   invalid_credentials: The email and password you entered did not match our records. Try again or click Forgot Password to reset your password.
   invalid_login_method: Login failed due to account mismatch. You need to log in with omniauth.
@@ -295,8 +295,8 @@ en:
     search:
       start: Start searching...
   landing:
-    about: "Sage Music Meet is powered by %{href}, is a simple front-end for the BigBlueButton open-source web conferencing. You can take your online music lessons here, create your own rooms to host sessions, join others using a short and convenient link, and record your lessons for future reference."
-    welcome: Welcome to Sage Music Meet.
+    about: "Sage Music® Meet is powered by %{href}, a simple front-end for BigBlueButton open-source web meetings. You can take your online music lessons here, create your own rooms to host sessions, join others using a short and convenient link, and record your lessons for future reference."
+    welcome: Welcome to Sage Music® Meet.
     video: Watch our tutorial on using Greenlight
     upgrade: Show me how to upgrade to 2.0!
     version: We've released a new version of Greenlight, but your database isn't compatible.
@@ -328,11 +328,11 @@ en:
         signup_info: To signup using your email, click the button below and follow the steps.
         signup_link: Sign Up
         signup:
-          info: A user that was invited has signed up to use Greenlight.
+          info: A user that was invited has signed up to use Sage Music® Meet.
           admins_link: Visit the Organization Page
-          subject: New Greenlight User Sign Up
+          subject: New Sage Music® Meet User Sign Up
           username: The user signed up with the name %{name} and the email %{email}.
-        subject: Invitation to join BigBlueButton
+        subject: Invitation to join Sage Music® Meet
         username: Your username is %{email}.
       password_reset:
         title: 'Password reset'
@@ -347,17 +347,17 @@ en:
         more-info: To view your new abilities please visit %{url}.
         subtitle: "%{role} Rights Granted"
       verify_email:
-        welcome: Welcome to your personal space, %{name}!
-        success: Leveraging %{bigbluebutton}, you can create your own rooms to host sessions and collaborate with others.
+        welcome: Welcome to Sage Music® Meet, %{name}!
+        success: Using %{bigbluebutton}, you can take your lessons, view your lesson recordings, share documents, and collaborate with others.
         username: Your username is %{email}.
         verify: To verify your account, just click the button below.
         verify_text: 'To verify your account, just follow this link: %{url}'
         verify_link: Verify Account
         thanks: Thanks for joining and have a great day!
       account_created_email:
-        username: Your username is %{email}.
-        password: Your password is %{password}.
-        login: 'Login at %{url}.'
+        username: Your username is %{email}
+        password: Your password is %{password}
+        login_url: Login meet.sagemusic.co
   maintenance:
     window_alert: Maintenance window scheduled for %{date}
   max_concurrent: The maximum number of concurrent sessions allowed has been reached!
@@ -537,6 +537,7 @@ en:
       title: Join a Room
     no_sessions: This room has no sessions, yet!
     recordings: Room Recordings
+    recordings_subheader: Recordings are deleted after 60 days. Please download to keep.
     room_limit: You have reached the maximum number of rooms allowed
     room_limit_exceeded: You have exceeded the number of rooms allowed. Please delete %{difference} room(s) to access this room.
     sessions: Sessions
